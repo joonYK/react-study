@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>JSX</title>
+
+	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+<body>
+
+	<div id="expression1"></div>
+
+    <script type="text/babel">
+        function formatName(user) {
+            return user.firstName + ' ' + user.lastName;
+        }
+
+        const user = {
+            firstName: 'Joonyeop',
+            lastName: 'Kim'
+        };
+
+        const element = (
+            <h1>
+                Hello, {formatName(user)}!
+            </h1>
+        );
+
+        ReactDOM.render(
+            element,
+            document.getElementById('expression1')
+        );
+    </script>
+
+
+    <div id="expression2"></div>
+    <div id="expression3"></div>
+    <script type="text/babel">
+    
+        function getGreeting(user) {
+            if (user) {
+                return <h1>Hello, {formatName(user)}!</h1>;
+            }
+            return <h1>Hello, Stranger.</h1>;
+        }
+        
+        ReactDOM.render(
+            getGreeting(user),
+            document.getElementById('expression2')
+        );
+
+        ReactDOM.render(
+            getGreeting(),
+            document.getElementById('expression3')
+        );
+    </script>
+
+
+    
+    <div id="attribute"></div>
+	<script type="text/babel">
+        const color = "blue";
+
+        const element = (
+            <font color={color}>attribute color blue</font>
+        );
+        
+        ReactDOM.render(
+            element,
+            document.getElementById('attribute')
+        );
+
+    </script>
+
+
+    <div id="child"></div>
+    <script type="text/babel">
+        const element = (
+            <div>
+                <h1>Hello!</h1>
+                <h2>Good to see you here.</h2>
+            </div>
+        );
+        
+        ReactDOM.render(
+            element,
+            document.getElementById('child')
+        );
+
+    </script>
+
+
+
+    <div id="object"></div>
+    <script type="text/babel">
+        const element = React.createElement(
+            'h1',
+            {className: 'greeting'},
+            'Hello, world!'
+        );
+
+        //위와 동일
+        // const element = (
+        //     <h1 className='greeting'>
+        //         Hello, world!
+        //     </h1>
+        // );
+
+        
+        ReactDOM.render(
+            element,
+            document.getElementById('object')
+        );
+
+    </script>
+</body>
+</html>
