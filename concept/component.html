@@ -13,11 +13,16 @@
 </head>
 <body>
 
+	<!--
+		컴포넌트의 이름은 항상 대문자로 시작.
+		소문자로 시작하는 컴포넌트는 DOM 태그로 처리한다.
+	-->
+
 	<div id="funcComponent"></div>
 	<div id="classComponent"></div>
 	
+	
     <script type="text/babel">
-
 		//함수 컴포넌트
 		function Welcome1(props) {
 			return <h1>Hello, {props.name}</h1>;
@@ -39,7 +44,10 @@
 
 	
 
-	<!-- 컴포넌트 합성 -->
+	<!-- 
+		컴포넌트 합성.
+		여러개의 컴포넌트를 사용해서 추상 컴포넌트를 만들 수 있다.
+	-->
 	<div id="multiClassComponent"></div>
 
     <script type="text/babel">
@@ -55,6 +63,78 @@
 		} 
 
 		ReactDOM.render(<App />, document.getElementById('multiClassComponent'));
+
+    </script>
+
+
+
+	<!-- 컴포넌트 추출 -->
+	<div id="comment"></div>
+
+	<!-- 
+		중첩된 구성요소들을 작은 컴포넌트들로 분리하여 재사용성을 높인다.
+		각 컴포넌트는 어디서 렌더링 되는지 신경쓰지 않는다. 
+		props의 이름도 컴포넌트 자체의 관점에서 작성.
+	-->
+    <script type="text/babel">
+
+		// function Comment(props) {
+		// 	return (
+		// 		<div className='Comment'>
+		// 			<div className='UserInfo'>
+		// 				<img className='Avatar' src={props.author.avatarUrl} alt={props.author.name} />
+		// 				<div className='UserInfo-name'>
+		// 					{props.author.name}
+		// 				</div>
+		// 			</div>
+		// 			<div className='Comment-text'>
+		// 				{props.text}
+		// 			</div>
+		// 			<div className='Comment-date'>
+		// 				{props.date}
+		// 			</div>
+		// 		</div>
+		// 	);
+		// }
+
+		function Avatar(props) {
+			return (
+				<img className='Avatar' src={props.user.avatarUrl} alt={props.user.name} />
+			);
+		}
+
+		function UserInfo(props) {
+			return (
+				<div className='UserInfo'>
+					<Avatar user={props.user} />
+					<div className='UserInfo-name'>
+						name : {props.user.name}
+					</div>
+				</div>
+			);
+		}
+
+		function Comment(props) {
+			return (
+				<div className='Comment'>
+					<UserInfo user={props.author}/>
+					<div className='Comment-text'>
+						{props.text}
+					</div>
+					<div className='Comment-date'>
+						{props.date.toString()}
+					</div>
+				</div>
+			);
+		}
+
+		const author = {
+			name : 'joonyeop',
+			avatarUrl : 'images/image.jpg'
+		}
+
+		const commentElement = <Comment text='코멘트입니다.' date={new Date()} author={author} />
+		ReactDOM.render(commentElement, document.getElementById('comment'));
 
     </script>
 
