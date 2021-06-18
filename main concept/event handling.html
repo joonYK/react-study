@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>이벤트 처리</title>
+
+	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+</head>
+<body>
+
+	<!--
+		* DOM 엘리먼트 처리와 차이점.
+
+		1. 소문자 대신 캐멀 케이스(camelCase)를 사용.
+		2. JSX를 사용하여 문자열이 아닌 함수로 이벤트 핸들러를 전달.
+	-->
+
+	<button onclick="activateAlert('DOM')">
+		Activate alert by DOM
+	</button>
+
+	<div id="activeAlert"></div>
+		
+    <script type="text/babel">
+		function activateAlert(type) {
+			alert(`Activate alert by ${type}`);
+		}
+		
+		const activeAlertElement = (
+			<button onClick={() => activateAlert()}>
+				Activate alert by React
+			</button>
+		);
+
+		ReactDOM.render(activeAlertElement, document.getElementById('activeAlert'));
+	</script>
+
+	<br/><br/>
+
+	<!--
+		3. 기본 동작 방지 시, false 반환이 아닌 preventDefault를 명시적으로 호출.
+	-->
+
+	<a href="#" onclick="console.log('The link was clicked.');">
+		Click me
+	</a>
+
+	<div id="actionLink"></div>
+		
+    <script type="text/babel">
+		function ActionLink() {
+			function handleClick(e) {
+				e.preventDefault();
+				console.log('The link was clicked.');
+			}
+
+			return (
+				<a href="#" onClick={handleClick}>
+					Click me
+				</a>
+			);
+		}
+		
+		ReactDOM.render(<ActionLink />, document.getElementById('actionLink'));
+	</script>
+
+	<br/><br/>
+
+	<!--
+		ES6 클래스를 사용하여 컴포넌트 정의 시, 이벤트 핸들러는 메서드로 선언.
+	-->
+
+	<div id="toggle"></div>
+
+	<script type="text/babel">
+		class Toggle extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {isToggleOn : true};
+
+				//콜백에서 'this'가 작동하려면 바인딩 필요.
+				this.handleClick = this.handleClick.bind(this);
+			}
+
+			handleClick() {
+				this.setState(state => ({
+					isToggleOn : !state.isToggleOn
+				}));
+			}
+
+			render() {
+				return (
+					<button onClick={this.handleClick}>
+						{this.state.isToggleOn ? 'ON' : 'OFF'}
+					</button>
+				)
+			}
+		}
+
+		ReactDOM.render(<Toggle />, document.getElementById('toggle'));
+	</script>
+	
+
+</body>
+</html>
