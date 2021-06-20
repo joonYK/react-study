@@ -98,13 +98,49 @@
 					<button onClick={this.handleClick}>
 						{this.state.isToggleOn ? 'ON' : 'OFF'}
 					</button>
+
+					// 따로 생성자에서 바인딩 처리를 하지 않고, this가 handleClick 내에서 바인딩 되도록 처리하려면 화살표 함수로 한다.
+					// 하지만 렌더링될 때마다 다른 콜백이 생성되어, 하위 컴포넌트에 props로 전달된다면, 그 컴포넌트가 추가로 다시 렌더링하는 성능 문제가 있을 수 있음.
+					// <button onClick={() => this.handleClick()}> 
 				)
 			}
 		}
 
 		ReactDOM.render(<Toggle />, document.getElementById('toggle'));
 	</script>
+
+	<br/><br/>
 	
+	<!-- 이벤트 핸들러에 이벤트 인자 전달 -->
+
+	<div id="deleteRowButton"></div>
+
+	<script type="text/babel">
+
+		class DeleteRowButton extends React.Component {
+			constructor(props) {
+				super(props);
+			}
+
+			deleteRow(id, e) {
+				console.log(`delete : ${id}`)
+				console.log(e);
+			}
+
+			
+			render() {
+				return (
+					<div>
+						<button onClick={(e) => this.deleteRow(1, e)}>Delete Row</button>
+						<br/>
+						<button onClick={this.deleteRow.bind(this, 2)}>Delete Row</button>
+					</div>
+				)
+			}
+		}
+		
+		ReactDOM.render(<DeleteRowButton />, document.getElementById('deleteRowButton'));
+	</script>
 
 </body>
 </html>
